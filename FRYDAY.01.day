@@ -1,0 +1,109 @@
+from cmath import e
+import contextlib
+import pyttsx3
+import speech_recognition  as sr
+import datetime
+import wikipedia
+import webbrowser
+import os
+import smtplib
+
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voice',voices[1].id)
+
+
+def speak(audio):
+       engine.say(audio)
+       engine.runAndWait()
+
+def wishMe():
+    hour = int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        speak("GOOD MORNING SIR !")
+  
+    elif hour>=12 and hour<18:
+        speak ("GOOD EVENING SIR !")
+   
+    else:
+        speak("GOOD EVENING SIR !")
+   
+    speak(" I AM FRYDAY SPEED -1 TERABYTES, HOW CAN I HELP YOU ?")
+
+
+def takeCommand():
+     #it takes ,icrophone input from the user andf returns string output
+     
+    r = sr.Recognizer()
+    with sr. Microphone() as source:
+        print("Listening...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+           
+    try:
+        print("Recognizing...") 
+        query = r.recognize_google(audio, Language= 'en-in')
+        print("user said:  ", query)
+              
+    except Exception as e:
+       print(e) 
+       
+    print("say that again please...")
+    return "None"
+    return query
+
+
+if __name__ == "__main__": 
+        wishMe()    
+      #while True :    
+        if 1:         
+            query =  takeCommand().lower()
+  
+             #logic for executing tasks based on query
+            if 'wikipedia' in query:
+                speak('searching wikipedia...')
+                query = query.replace("wikipedia","")
+                results = wikipedia.summary(query, sentences = 5)
+                speak ("According to wikipedia")
+                print(results)
+                speak (results)
+                
+            elif 'open youtube' in query:
+                webbrowser.open("youtube.com")
+                
+            elif 'open google ' in query:
+                webbrowser.open("open google.com")
+                
+            elif 'open stackoverflow' in query:
+                webbrowser.open("stackoverflow.com")
+                
+            elif 'play music' in query:
+               music_dir ='D:\\Non critical\\songs\\favourite songs2'
+               songs = os.listdir(music_dir)
+               print(songs)
+               os.startfile(os.path.join(music_dir,songs[0]))
+               
+            elif  'the time' in query:
+                strTime = datetime.datetime.now().strftime("%H:%M:%S")
+                speak("SIR the time is {strTime}")
+                
+            elif 'V.S  CODE' in query:
+               CodePath =   "C:\\Users\\anshg\\Downloads\\VSCodeUserSetup-x64-1.82.2.exe"
+               os.startfile(CodePath)
+               
+            elif 'email to ansh' in query:
+                try: 
+                     speak("what should i say")
+                     Content =takeCommand()
+                     to= "anshyourEmail@gmail.com"
+                     (to,Content)
+                     server = smtplib.SMTP('smtp.gmail.com', 587)
+                     server.ehlo()
+                     server.starttls()
+                     server.login('anshgt2005@gmail.com','anshgt12C')
+                     server.sendemail('anshgt2005@gmail.com', to , contextlib)
+                     server.close()
+                     speak("email has to be sent")
+                except Exception as e :
+                 print(e)
+                 speak("SORRY SIR! . I AM NOT ABLE TO SEND THIS EMAIL AT THIS MOMENT")
